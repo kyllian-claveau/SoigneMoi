@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1 class="text-2xl font-bold mb-4">Liste des médecins</h1>
+    {% for doctor in doctors %}
+        <div class="mb-4">
+            <p>{{ doctor.firstName }} {{ doctor.lastName }}</p>
+            <p>{{ doctor.specialty.name }}</p>
+            <p>{{ doctor.matricule }}</p>
+        </div>
+        {% else %}
+        <p>Aucun médecin n'a été trouvé.</p>
+    {% endfor %}
+{% endblock %}

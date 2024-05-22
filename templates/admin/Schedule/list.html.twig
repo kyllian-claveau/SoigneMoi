@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1 class="text-2xl font-bold mb-4">Plannings des médecins</h1>
+    <table class="table-auto">
+        <thead>
+        <tr>
+            <th class="px-4 py-2">Date</th>
+            <th class="px-4 py-2">Nombre de patients</th>
+            <th class="px-4 py-2">Médecin</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for schedule in schedules %}
+            <tr>
+                <td class="border px-4 py-2">{{ schedule.date|date('d/m/Y') }}</td>
+                <td class="border px-4 py-2">{{ schedule.patientCount }}</td>
+                <td class="border px-4 py-2">{{ schedule.doctor.firstName }} {{ schedule.doctor.lastName }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3" class="border px-4 py-2">Aucun planning trouvé.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

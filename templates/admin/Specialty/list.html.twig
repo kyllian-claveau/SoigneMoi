@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1 class="text-2xl font-bold mb-4">Liste des spécialités</h1>
+    {% for specialty in specialtys %}
+        <div class="mb-4">
+            <p>{{ specialty.name }}</p>
+        </div>
+        {% else %}
+        <p>Aucune spécialité n'a été trouvé.</p>
+    {% endfor %}
+{% endblock %}
