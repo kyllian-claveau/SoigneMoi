@@ -20,10 +20,12 @@ class StayType extends AbstractType
             ->add('startDate', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date d\'arrivée',
+                'attr' => ['class' => 'flatpickr']
             ])
             ->add('endDate', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date de fin',
+                'attr' => ['class' => 'flatpickr']
             ])
             ->add('reason', TextType::class, [
                 'label' => 'Motif',
@@ -52,4 +54,3 @@ class StayType extends AbstractType
         ]);
     }
 }
-

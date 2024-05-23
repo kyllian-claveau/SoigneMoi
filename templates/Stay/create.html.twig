@@ -15,7 +15,7 @@
                 <div>
                     <label for="{{ form.startDate.vars.id }}" class="block text-sm font-medium text-gray-700">Date d'arrivée</label>
                     <div class="mt-1">
-                        {{ form_widget(form.startDate, {'attr': {'class': 'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'}}) }}
+                        {{ form_widget(form.startDate, {'attr': {'class': 'flatpickr block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'}}) }}
                         {{ form_errors(form.startDate) }}
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                 <div>
                     <label for="{{ form.endDate.vars.id }}" class="block text-sm font-medium text-gray-700">Date de fin</label>
                     <div class="mt-1">
-                        {{ form_widget(form.endDate, {'attr': {'class': 'block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'}}) }}
+                        {{ form_widget(form.endDate, {'attr': {'class': 'flatpickr block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'}}) }}
                         {{ form_errors(form.endDate) }}
                     </div>
                 </div>
