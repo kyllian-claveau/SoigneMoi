@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Doctor;
 use App\Entity\Specialty;
 use App\Entity\Stay;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,13 +20,15 @@ class StayType extends AbstractType
         $builder
             ->add('startDate', DateType::class, [
                 'widget' => 'single_text',
+                'html5' => false,
                 'label' => 'Date d\'arrivée',
-                'attr' => ['class' => 'flatpickr']
+                'format' => 'dd-MM-yyyy'
             ])
             ->add('endDate', DateType::class, [
                 'widget' => 'single_text',
+                'html5' => false,
                 'label' => 'Date de fin',
-                'attr' => ['class' => 'flatpickr']
+                'format' => 'dd-MM-yyyy'
             ])
             ->add('reason', TextType::class, [
                 'label' => 'Motif',
@@ -37,8 +40,8 @@ class StayType extends AbstractType
                 'placeholder' => 'Choisissez une spécialité',
             ])
             ->add('doctor', EntityType::class, [
-                'class' => Doctor::class,
-                'choice_label' => function(Doctor $doctor) {
+                'class' => User::class,
+                'choice_label' => function(User $doctor) {
                     return $doctor->getFirstname() . ' ' . $doctor->getLastname();
                 },
                 'label' => 'Docteur',

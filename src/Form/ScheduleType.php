@@ -18,6 +18,7 @@ class ScheduleType extends AbstractType
             ->add('date', DateType::class, [
                 'label' => 'Date du rendez-vous',
                 'widget' => 'single_text',
+                'attr' => ['class' => 'flatpickr']
             ])
             ->add('patientCount', IntegerType::class, [
                 'label' => 'Nombre de patients',

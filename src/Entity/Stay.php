@@ -26,13 +26,17 @@ class Stay
     #[ORM\JoinColumn(nullable: false)]
     private $specialty;
 
-    #[ORM\ManyToOne(targetEntity: Doctor::class)]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private $doctor;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(nullable: false)]
     private $user;
+
+    #[ORM\ManyToOne(targetEntity: Schedule::class, inversedBy: "stays")]
+    #[ORM\JoinColumn(nullable: false)]
+    private $schedule;
 
     public function getId(): ?int
     {
@@ -87,12 +91,12 @@ class Stay
         return $this;
     }
 
-    public function getDoctor(): ?Doctor
+    public function getDoctor(): ?User
     {
         return $this->doctor;
     }
 
-    public function setDoctor(?Doctor $doctor): self
+    public function setDoctor(?User $doctor): self
     {
         $this->doctor = $doctor;
 
@@ -107,6 +111,18 @@ class Stay
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getSchedule(): ?Schedule
+    {
+        return $this->schedule;
+    }
+
+    public function setSchedule(?Schedule $schedule): self
+    {
+        $this->schedule = $schedule;
 
         return $this;
     }
