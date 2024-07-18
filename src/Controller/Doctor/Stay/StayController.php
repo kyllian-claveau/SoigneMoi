@@ -2,13 +2,17 @@
 
 namespace App\Controller\Doctor\Stay;
 
+use App\Entity\Prescription;
 use App\Entity\Stay;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/api')]
 class StayController extends AbstractController
@@ -40,11 +44,13 @@ class StayController extends AbstractController
         foreach ($stays as $stay) {
             $stayData[] = [
                 'id' => $stay->getId(),
-                'specialty_id' => $stay->getSpecialty()->getId(),
                 'doctor_id' => $stay->getDoctor()->getId(),
                 'user_id' => $stay->getUser()->getId(),
+                'user_firstname' => $stay->getUser()->getFirstname(),
+                'user_lastname' => $stay->getUser()->getLastname(),
                 'reason' => $stay->getReason(),
-                'schedule_id' => $stay->getSchedule()->getId(),
+                'start_date' => $stay->getStartDate()->format('Y-m-d'),
+                'end_date' => $stay->getEndDate()->format('Y-m-d'),
             ];
         }
 

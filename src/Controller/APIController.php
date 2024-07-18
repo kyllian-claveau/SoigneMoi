@@ -2,8 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Prescription;
+use App\Entity\Review;
+use App\Entity\Stay;
+use App\Repository\StayRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class APIController
 {
