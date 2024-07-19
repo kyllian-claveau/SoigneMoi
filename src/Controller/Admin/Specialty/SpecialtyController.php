@@ -2,8 +2,10 @@
 
 namespace App\Controller\Admin\Specialty;
 
+use App\Controller\APIController;
 use App\Entity\Specialty;
 use App\Form\SpecialtyType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,8 +16,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class SpecialtyController extends AbstractController
 {
     #[Route('/specialty/create', name: 'app_specialty_create')]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    public function createRequest (Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
     {
+        $user = $apiController->getUserFromToken($request, $userRepository);
         $specialty = new Specialty();
         $form = $this->createForm(SpecialtyType::class, $specialty);
         $form->handleRequest($request);
@@ -31,15 +34,18 @@ class SpecialtyController extends AbstractController
 
         return $this->render('admin/Specialty/create.html.twig', [
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 
     #[Route('/specialty/list', name: 'app_specialty_list')]
-    public function list(EntityManagerInterface $entityManager)
+    public function list(Request $request, UserRepository $userRepository, APIController $apiController,EntityManagerInterface $entityManager)
     {
+        $user = $apiController->getUserFromToken($request, $userRepository);
         $specialtys = $entityManager->getRepository(Specialty::class)->findAll();
         return $this->render('admin/Specialty/list.html.twig', [
             'specialtys' => $specialtys,
+            'user' => $user,
         ]);
     }
 }

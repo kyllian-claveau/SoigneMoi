@@ -1,0 +1,63 @@
+{% extends 'layout/authenticated/admin/base.html.twig' %}
+
+{% block content %}
+<div class="ml-14 mt-24 md:ml-64 px-4 sm:px-6 lg:px-8">
+    <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+            <h1 class="text-base font-semibold leading-6">Séjours</h1>
+            <p class="mt-2 text-sm text-gray-700">Une liste de tous les séjours</p>
+        </div>
+        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+            <a href="{{ path('app_stay_create') }}" type="button"
+               class="block rounded-md bg-secondary px-3 py-2 text-center text-sm font-semibold text-blue-800 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+    <div class="mt-8 flow-root">
+        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                    <table class="min-w-full divide-y divide-primary">
+                        <thead class="bg-secondary text-blue-800">
+                        <tr>
+                            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-6">Date d'arrivée
+                            </th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Date de départ</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Motif</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Docteur consulté</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Spécialité du docteur</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 bg-white">
+                        {% for stay in stays %}
+                        <tr>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ stay.startDate|date('d-m-Y') }}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ stay.endDate|date('d-m-Y') }}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ stay.reason }}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ stay.doctor.firstName }}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ stay.specialty.name }}</td>
+                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                <a href="#" class="hover:text-red-300 text-red-500">Supprimer</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                            <tr>
+                                <td class="whitespace-nowrap py-4 text-sm font-medium text-center" colspan="6">
+                                    Aucun séjour enregistré
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

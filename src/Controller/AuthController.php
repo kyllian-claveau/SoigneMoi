@@ -7,44 +7,57 @@ use App\Form\LoginType;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AuthController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    private $client;
+
+    public function __construct(HttpClientInterface $client)
     {
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $this->client = $client;
+    }
+    #[Route(path: '/api/login', name: 'api_login', methods: ['POST'])]
+    public function apiLogin(): JsonResponse
+    {
+        $user = $this->getUser();
 
-        $form = $this->createForm(LoginType::class, [
-            '_username' => $lastUsername,
-        ]);
+        if (!$user) {
+            throw new AccessDeniedException('User not authenticated.');
+        }
 
-        return $this->render('login.html.twig', [
-            'form' => $form->createView(),
-            'last_username' => $lastUsername,
-            'error' => $error,
-        ]);
+        return new JsonResponse([
+            'email' => $user->getUserIdentifier(),
+            'roles' => $user->getRoles(),
+            'id' => $user->getId(),
+        ], JsonResponse::HTTP_OK);
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+
+    #[Route(path: '/login', name: 'app_login', methods: ['GET'])]
+    public function login(Request $request): Response
+    {
+        return $this->render('public/Auth/login.html.twig');
+    }
+
+    #[Route('/logout', name: 'app_logout')]
     public function logout(): Response
     {
-        return $this->redirectToRoute('app_login');
+        return $this->redirectToRoute('app_index');
     }
 
-    #[Route(path: '/register', name:'app_register')]
+    #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this
-            ->createForm(RegisterType::class, $user)
-            ->handleRequest($request);
+        $form = $this->createForm(RegisterType::class, $user)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
@@ -53,13 +66,14 @@ class AuthController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
+            $user->setRoles(['ROLE_USER']);
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('api_login');
         }
 
-        return $this->render('register.html.twig', [
+        return $this->render('public/Auth/register.html.twig', [
             'form' => $form->createView(),
         ]);
     }
