@@ -43,9 +43,12 @@ class AuthController extends AbstractController
 
 
     #[Route(path: '/login', name: 'app_login', methods: ['GET'])]
-    public function login(Request $request): Response
+    public function login(Request $request, UserRepository $userRepository, APIController $apiController): Response
     {
-        return $this->render('public/Auth/login.html.twig');
+        $user = $apiController->getUserFromToken($request, $userRepository);
+        return $this->render('public/Auth/login.html.twig', [
+            'user' => $user,
+        ]);
     }
 
     #[Route('/logout', name: 'app_logout')]

@@ -72,7 +72,6 @@ class StayController extends AbstractController
     public function listOver(Request $request, UserRepository $userRepository, APIController $apiController,EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
-        $user = $this->getUser();
 
         // Récupérer les séjours passés
         $currentDate = new \DateTime();
@@ -94,7 +93,6 @@ class StayController extends AbstractController
     public function listNow(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
-        $user = $this->getUser();
 
         // Récupérer les séjours en cours
         $currentDate = new \DateTime();
@@ -117,8 +115,6 @@ class StayController extends AbstractController
     public function listComingSoon(Request $request, UserRepository $userRepository, APIController $apiController,EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
-        $user = $this->getUser();
-
         // Récupérer les séjours à venir
         $currentDate = new \DateTime();
         $stays = $entityManager->getRepository(Stay::class)->createQueryBuilder('s')

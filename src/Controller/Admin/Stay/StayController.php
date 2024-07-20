@@ -3,7 +3,6 @@
 namespace App\Controller\Admin\Stay;
 
 use App\Controller\APIController;
-use App\Entity\Doctor;
 use App\Entity\Stay;
 use App\Form\StayType;
 use App\Repository\UserRepository;
