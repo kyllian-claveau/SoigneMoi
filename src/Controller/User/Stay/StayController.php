@@ -19,9 +19,6 @@ class StayController extends AbstractController
     public function create(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
-        if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
-            throw $this->createAccessDeniedException('Access denied');
-        }
         $stay = new Stay();
         $form = $this->createForm(StayType::class, $stay);
         $form->handleRequest($request);
