@@ -11,15 +11,19 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/user')]
-#[IsGranted('ROLE_USER')]
 class DashboardController extends AbstractController
 {
 #[Route('/dashboard', name: 'app_user_dashboard')]
-    public function index(Request $request, UserRepository $userRepository, APIController $apiController): Response
-    {
-        $user = $apiController->getUserFromToken($request, $userRepository);
-        return $this->render('user/Dashboard/dashboard.html.twig', [
-            'user' => $user,
-        ]);
+public function index(Request $request, UserRepository $userRepository, APIController $apiController): Response
+{
+    $user = $apiController->getUserFromToken($request, $userRepository);
+
+    if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
+        throw $this->createAccessDeniedException('Access denied');
     }
+
+    return $this->render('user/Dashboard/dashboard.html.twig', [
+        'user' => $user,
+    ]);
+}
 }

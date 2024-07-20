@@ -19,6 +19,9 @@ class SpecialtyController extends AbstractController
     public function createRequest (Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         $specialty = new Specialty();
         $form = $this->createForm(SpecialtyType::class, $specialty);
         $form->handleRequest($request);
@@ -42,6 +45,9 @@ class SpecialtyController extends AbstractController
     public function list(Request $request, UserRepository $userRepository, APIController $apiController,EntityManagerInterface $entityManager)
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         $specialtys = $entityManager->getRepository(Specialty::class)->findAll();
         return $this->render('admin/Specialty/list.html.twig', [
             'specialtys' => $specialtys,
