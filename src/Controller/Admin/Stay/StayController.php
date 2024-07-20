@@ -19,6 +19,9 @@ class StayController extends AbstractController
     public function list(Request $request, UserRepository $userRepository, APIController $apiController,EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         $stays = $entityManager->getRepository(Stay::class)->findAll();
 
         return $this->render('Admin/Stay/list.html.twig', [

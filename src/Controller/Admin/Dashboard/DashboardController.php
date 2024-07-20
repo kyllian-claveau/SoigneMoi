@@ -16,6 +16,9 @@ class DashboardController extends AbstractController
     public function index(Request $request, UserRepository $userRepository, APIController $apiController): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         return $this->render('Admin/Dashboard/dashboard.html.twig', [
             'user' => $user,
         ]);

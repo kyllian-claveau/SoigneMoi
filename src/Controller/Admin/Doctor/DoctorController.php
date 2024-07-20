@@ -23,6 +23,9 @@ class DoctorController extends AbstractController
     public function create(Request $request, UserRepository $userRepository, APIController $apiController, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         $doctor = new User();
         $form = $this->createForm(DoctorType::class, $doctor)->handleRequest($request);
 
@@ -62,7 +65,9 @@ class DoctorController extends AbstractController
     public function list(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager)
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
-
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         // Utilisation de findBy pour récupérer tous les utilisateurs ayant le rôle ROLE_DOCTOR
         $doctors = $userRepository->findDoctors();
 

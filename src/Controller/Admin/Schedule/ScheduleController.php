@@ -22,6 +22,9 @@ class ScheduleController extends AbstractController
     public function create(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager, int $doctorId): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         $doctor = $entityManager->getRepository(User::class)->find($doctorId);
         if (!$doctor) {
             throw $this->createNotFoundException('Le médecin avec l\'identifiant ' . $doctorId . ' n\'existe pas.');
@@ -52,6 +55,9 @@ class ScheduleController extends AbstractController
     public function show(Request $request, UserRepository $userRepository, APIController $apiController,int $id, EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         // Récupérer le médecin en fonction de l'ID
         $doctor = $entityManager->getRepository(User::class)->find($id);
 
@@ -67,8 +73,12 @@ class ScheduleController extends AbstractController
     }
 
     #[Route('/doctor/{id}/events', name: 'app_doctor_events')]
-    public function events(int $uuid, EntityManagerInterface $entityManager): JsonResponse
+    public function events(Request $request, UserRepository $userRepository, APIController $apiController, int $uuid, EntityManagerInterface $entityManager): JsonResponse
     {
+        $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         // Récupérer les séjours du médecin en fonction de l'ID
         $stays = $entityManager->getRepository(Stay::class)->findBy(['doctor' => $uuid]);
 
@@ -92,6 +102,9 @@ class ScheduleController extends AbstractController
     public function index(Request $request, UserRepository $userRepository, APIController $apiController,EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         $schedules = $entityManager->getRepository(Schedule::class)->findAll();
 
         return $this->render('admin/Schedule/list.html.twig', [

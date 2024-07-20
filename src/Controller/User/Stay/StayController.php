@@ -19,6 +19,9 @@ class StayController extends AbstractController
     public function create(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         $stay = new Stay();
         $form = $this->createForm(StayType::class, $stay);
         $form->handleRequest($request);
@@ -60,6 +63,9 @@ class StayController extends AbstractController
     public function list(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         $stays = $entityManager->getRepository(Stay::class)->findBy(['user' => $this->getUser()]);
 
         return $this->render('User/Stay/list.html.twig', [
@@ -72,7 +78,9 @@ class StayController extends AbstractController
     public function listOver(Request $request, UserRepository $userRepository, APIController $apiController,EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
-
+        if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         // Récupérer les séjours passés
         $currentDate = new \DateTime();
         $stays = $entityManager->getRepository(Stay::class)->createQueryBuilder('s')
@@ -93,7 +101,9 @@ class StayController extends AbstractController
     public function listNow(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
-
+        if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         // Récupérer les séjours en cours
         $currentDate = new \DateTime();
         $stays = $entityManager->getRepository(Stay::class)->createQueryBuilder('s')
@@ -115,7 +125,9 @@ class StayController extends AbstractController
     public function listComingSoon(Request $request, UserRepository $userRepository, APIController $apiController,EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
-        // Récupérer les séjours à venir
+        if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         $currentDate = new \DateTime();
         $stays = $entityManager->getRepository(Stay::class)->createQueryBuilder('s')
             ->where('s.user = :user')
@@ -134,10 +146,13 @@ class StayController extends AbstractController
 
 
     #[Route('/doctors/by-specialty/{specialtyId}', name: 'doctors_by_specialty', methods: ['GET'])]
-    public function getDoctorsBySpecialty($specialtyId, EntityManagerInterface $entityManager): Response
+    public function getDoctorsBySpecialty(Request $request, UserRepository $userRepository, APIController $apiController, $specialtyId, EntityManagerInterface $entityManager): Response
     {
+        $user = $apiController->getUserFromToken($request, $userRepository);
         $doctors = $entityManager->getRepository(User::class)->findBy(['specialty' => $specialtyId]);
-
+        if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied');
+        }
         $doctorData = [];
         foreach ($doctors as $doctor) {
             $doctorData[] = [
