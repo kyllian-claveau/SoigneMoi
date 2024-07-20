@@ -14,7 +14,7 @@ document.addEventListener("scroll", function () {
         navaction.classList.remove("bg-white");
         navaction.classList.add("gradient");
         navaction.classList.remove("text-black");
-        navaction.classList.add("text-white");
+        navaction.classList.add("text-black");
         // Use to switch toggleColour colours
         for (var i = 0; i < toToggle.length; i++) {
             toToggle[i].classList.add("text-black");
