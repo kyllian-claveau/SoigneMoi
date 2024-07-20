@@ -75,7 +75,7 @@ class AuthController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('api_login');
+            return $this->redirectToRoute('app_login');
         }
 
         // Checking if the user exists in the token
