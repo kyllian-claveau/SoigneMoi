@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/user')]
 class DashboardController extends AbstractController
 {
-    #[Route('/user/dashboard', name: 'app_user_dashboard')]
+    #[Route('/dashboard', name: 'app_user_dashboard')]
     public function list(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
