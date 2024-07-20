@@ -68,7 +68,7 @@ class StayController extends AbstractController
         }
         $stays = $entityManager->getRepository(Stay::class)->findBy(['user' => $this->getUser()]);
 
-        return $this->render('User/Stay/list.html.twig', [
+        return $this->render('user/Stay/list.html.twig', [
             'stays' => $stays,
             'user' => $user,
         ]);
@@ -91,7 +91,7 @@ class StayController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        return $this->render('User/Stay/listOver.html.twig', [
+        return $this->render('user/Stay/listOver.html.twig', [
             'stays' => $stays,
             'user' => $user,
         ]);
@@ -115,7 +115,7 @@ class StayController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        return $this->render('User/Stay/listNow.html.twig', [
+        return $this->render('user/Stay/listNow.html.twig', [
             'stays' => $stays,
             'user' => $user,
         ]);
@@ -137,7 +137,7 @@ class StayController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        return $this->render('User/Stay/listComingSoon.html.twig', [
+        return $this->render('user/Stay/listComingSoon.html.twig', [
             'stays' => $stays,
             'user' => $user,
         ]);
