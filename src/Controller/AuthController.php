@@ -57,7 +57,6 @@ class AuthController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserRepository $userRepository, APIController $apiController, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
-        $user = $apiController->getUserFromToken($request, $userRepository);
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user)->handleRequest($request);
 
@@ -74,7 +73,13 @@ class AuthController extends AbstractController
 
             return $this->redirectToRoute('api_login');
         }
-
+        if (!$user instanceof User) {
+            $user = $apiController->getUserFromToken($request, $userRepository);
+            if (!$user instanceof User) {
+                $user = new User(); // Crée un utilisateur vide
+                $user->setRoles(['']);
+            }
+        }
         return $this->render('public/Auth/register.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
