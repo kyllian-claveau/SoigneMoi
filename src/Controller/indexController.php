@@ -14,6 +14,10 @@ class indexController extends AbstractController
     public function index(Request $request, UserRepository $userRepository, APIController $apiController)
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user instanceof User) {
+            $user = new User(); // Crée un utilisateur vide
+            $user->setRoles(['']);
+        }
         return $this->render('public/index.html.twig', [
             'user' => $user,
         ]);

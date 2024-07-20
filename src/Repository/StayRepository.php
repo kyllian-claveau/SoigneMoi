@@ -43,4 +43,13 @@ class StayRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findStaysByDate(\DateTime $date)
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.startDate <= :date AND s.endDate >= :date')
+            ->setParameter('date', $date)
+            ->getQuery()
+            ->getResult();
+    }
 }

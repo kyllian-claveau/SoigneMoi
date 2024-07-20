@@ -24,7 +24,7 @@ class StayController extends AbstractController
 
         return $this->render('Admin/Stay/list.html.twig', [
             'stays' => $stays,
-            ' $user = $apiController->getUserFromToken($request, $userRepository);'
+            'user' => $user,
         ]);
     }
 }
