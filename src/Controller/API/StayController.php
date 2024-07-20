@@ -32,7 +32,7 @@ class StayController extends AbstractController
     public function getAllStays(Request $request, UserRepository $userRepository, APIController $apiController,): JsonResponse
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
-        if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
+        if (!$user || !in_array('ROLE_SECRETARY', $user->getRoles())) {
             throw $this->createAccessDeniedException('Access denied');
         }
 
