@@ -24,7 +24,7 @@ class StayController extends AbstractController
         }
         $stays = $entityManager->getRepository(Stay::class)->findAll();
 
-        return $this->render('Admin/Stay/list.html.twig', [
+        return $this->render('admin/Stay/list.html.twig', [
             'stays' => $stays,
             'user' => $user,
         ]);
