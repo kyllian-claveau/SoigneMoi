@@ -73,14 +73,14 @@ class ScheduleController extends AbstractController
     }
 
     #[Route('/doctor/{id}/events', name: 'app_doctor_events')]
-    public function events(Request $request, UserRepository $userRepository, APIController $apiController, int $uuid, EntityManagerInterface $entityManager): JsonResponse
+    public function events(Request $request, UserRepository $userRepository, APIController $apiController, int $id, EntityManagerInterface $entityManager): JsonResponse
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
             throw $this->createAccessDeniedException('Access denied');
         }
         // Récupérer les séjours du médecin en fonction de l'ID
-        $stays = $entityManager->getRepository(Stay::class)->findBy(['doctor' => $uuid]);
+        $stays = $entityManager->getRepository(Stay::class)->findBy(['doctor' => $id]);
 
         // Créer un tableau d'événements à partir des séjours
         $events = [];
