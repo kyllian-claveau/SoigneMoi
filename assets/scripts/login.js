@@ -21,11 +21,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         .then(data => {
             const token = data.token; // Supposons que votre API renvoie un objet avec une clé 'token'
 
-            // Afficher le token dans la console
-            console.log('Token reçu :', token);
-
             // Afficher le token dans la page
-            resultDiv.innerHTML = `<p>Token reçu : ${token}</p>`;
+            resultDiv.innerHTML = `<p>Authentification réussi !</p>`;
 
             // Stocker le token dans un cookie avec une expiration (exemple : 7 jours)
             const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 jours en milliseconds
