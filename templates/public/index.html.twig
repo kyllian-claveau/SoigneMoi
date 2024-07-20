@@ -3,29 +3,29 @@
 {% block title %}Hôpital de la Ville{% endblock %}
 {% block content %}
     <div class="pt-24">
-        <div class="container px-8 mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-8">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 items-center gap-8">
             <!-- Left Col -->
-            <div class="col-span-1 md:col-span-1 flex flex-col justify-center items-start text-center md:text-left">
-                <p class="uppercase tracking-loose w-full">
+            <div class="col-span-1 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+                <p class="uppercase tracking-loose w-full text-lg md:text-base">
                     À Lille, nous avons l'art de soigner, pas juste un hôpital, mais une véritable 'Lille de santé'.
                 </p>
-                <h1 class="my-4 text-5xl font-bold leading-tight">
+                <h1 class="my-4 text-4xl md:text-5xl font-bold leading-tight">
                     Qui sommes-nous ?
                 </h1>
-                <p class="leading-normal text-2xl mb-8">
+                <p class="leading-normal text-xl md:text-2xl md:mb-8">
                     Hôpital de la région lilloise, SoigneMoi est un centre hospitalier de référence dans le Nord de la France.
                 </p>
-                <button class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                <button class="mx-auto md:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-3 px-6 md:py-4 md:px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                     Réserver un séjour
                 </button>
             </div>
             <!-- Right Col -->
-            <div class="max-sm:hidden md:col-span-1 py-6 text-center-webkit">
-                <img class="max-sm:hidden w-full md:w-4/5 z-50" src="{{ asset('images/main.png') }}" />
+            <div class="hidden md:block col-span-1 py-6 text-center">
+                <img class="w-full md:w-4/5 z-50" src="{{ asset('images/main.png') }}" />
             </div>
         </div>
     </div>
-    <div class="relative -mt-12 lg:-mt-24">
+    <div class="relative -mt-8 lg:-mt-24">
         <svg viewBox="0 0 1428 174" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                 <g transform="translate(-2.000000, 44.000000)" fill="#FFFFFF" fill-rule="nonzero">
@@ -41,20 +41,20 @@
     </div>
 
     <section class="bg-white border-b py-8">
-        <div class="container mx-auto flex flex-wrap pt-4 px-8 pb-12">
-            <h2 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
+        <div class="container mx-auto flex flex-wrap pt-4 px-4 pb-12">
+            <h2 class="w-full my-2 text-4xl md:text-5xl font-bold leading-tight text-center text-gray-800">
                 Nos prestations
             </h2>
             <div class="w-full mb-4">
-                <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
+                <div class="h-1 mx-auto gradient w-24 md:w-64 opacity-25 my-0 py-0 rounded-t"></div>
             </div>
             <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
                 <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
                     <a href="#" class="flex flex-wrap no-underline hover:no-underline">
-                        <p class="w-full text-gray-600 text-xs mb-2 md:text-sm px-6">
+                        <p class="w-full text-gray-600 text-sm md:text-base mb-2 px-6">
                             Séjour
                         </p>
-                        <div class="w-full font-bold text-xl text-gray-800 px-6">
+                        <div class="w-full font-bold text-lg md:text-xl text-gray-800 px-6">
                             Réservez un séjour
                         </div>
                         <p class="text-gray-800 text-base px-6 mb-5">
@@ -64,7 +64,7 @@
                 </div>
                 <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
                     <div class="flex items-center justify-start">
-                        <a href="{{ path('app_stay_create') }}" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                        <a href="{{ path('app_stay_create') }}" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-3 px-6 md:py-4 md:px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                             Réservez
                         </a>
                     </div>
@@ -73,10 +73,10 @@
             <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
                 <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
                     <a href="#" class="flex flex-wrap no-underline hover:no-underline">
-                        <p class="w-full text-gray-600 text-xs mb-2 md:text-sm px-6">
+                        <p class="w-full text-gray-600 text-sm md:text-base mb-2 px-6">
                             Espace utilisateur
                         </p>
-                        <div class="w-full font-bold text-xl text-gray-800 px-6">
+                        <div class="w-full font-bold text-lg md:text-xl text-gray-800 px-6">
                             Un tableau de bord pour les utilisateurs
                         </div>
                         <p class="text-gray-800 text-base px-6 mb-5">
@@ -86,7 +86,7 @@
                 </div>
                 <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
                     <div class="flex items-center justify-start">
-                        <a href="{{ path('app_user_dashboard') }}" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                        <a href="{{ path('app_user_dashboard') }}" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-3 px-6 md:py-4 md:px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                             Tableau de bord
                         </a>
                     </div>
@@ -95,10 +95,10 @@
             <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
                 <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
                     <a href="#" class="flex flex-wrap no-underline hover:no-underline">
-                        <p class="w-full text-gray-600 text-xs mb-2 md:text-sm px-6">
+                        <p class="w-full text-gray-600 text-sm md:text-base mb-2 px-6">
                             Prise de contact
                         </p>
-                        <div class="w-full font-bold text-xl text-gray-800 px-6">
+                        <div class="w-full font-bold text-lg md:text-xl text-gray-800 px-6">
                             Prenez contact avec nous
                         </div>
                         <p class="text-gray-800 text-base px-6 mb-5">
@@ -108,8 +108,8 @@
                 </div>
                 <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
                     <div class="flex items-center justify-start">
-                        <a href="#contact" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <a href="#contact" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-3 px-6 md:py-4 md:px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m9 12.75 3 3m0 0 3-3m-3 3v-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                         </a>
@@ -140,17 +140,17 @@
             </g>
         </g>
     </svg>
-    <section id="contact" class="container mx-auto text-center py-6 px-8 mb-12">
-        <h2 class="w-full my-2 text-5xl font-bold leading-tight text-center text-white">
+    <section id="contact" class="container mx-auto text-center py-6 px-4 mb-12">
+        <h2 class="w-full my-2 text-4xl md:text-5xl font-bold leading-tight text-center text-white">
             Contact
         </h2>
         <div class="w-full mb-4">
             <div class="h-1 mx-auto bg-white w-1/6 opacity-25 my-0 py-0 rounded-t"></div>
         </div>
-        <h3 class="my-4 text-3xl leading-tight">
+        <h3 class="my-4 text-xl md:text-3xl leading-tight">
             Retrouvez nos coordonnées en cliquant sur le bouton ci-dessous !
         </h3>
-        <button class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+        <button class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-3 px-6 md:py-4 md:px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
             Par ici !
         </button>
     </section>
