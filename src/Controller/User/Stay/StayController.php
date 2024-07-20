@@ -50,26 +50,11 @@ class StayController extends AbstractController
 
             $this->addFlash('success', 'Le séjour a été créé avec succès.');
 
-            return $this->redirectToRoute('app_stay_list');
+            return $this->redirectToRoute('app_user_dashboard');
         }
 
         return $this->render('public/Stay/create.html.twig', [
             'form' => $form->createView(),
-            'user' => $user,
-        ]);
-    }
-
-    #[Route('/user/stay/list', name: 'app_stay_list')]
-    public function list(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
-    {
-        $user = $apiController->getUserFromToken($request, $userRepository);
-        if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
-            throw $this->createAccessDeniedException('Access denied');
-        }
-        $stays = $entityManager->getRepository(Stay::class)->findBy(['user' => $this->getUser()]);
-
-        return $this->render('user/Stay/list.html.twig', [
-            'stays' => $stays,
             'user' => $user,
         ]);
     }
