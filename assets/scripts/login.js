@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const password = document.getElementById('password').value;
     const resultDiv = document.getElementById('result');
 
-    fetch('https://soignemoiproject.online/api/login', {
+    fetch('https://172.17.0.1:8000/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
