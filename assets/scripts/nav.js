@@ -13,11 +13,11 @@ document.addEventListener("scroll", function () {
         header.classList.add("bg-white");
         navaction.classList.remove("bg-white");
         navaction.classList.add("gradient");
-        navaction.classList.remove("text-gray-800");
+        navaction.classList.remove("text-black");
         navaction.classList.add("text-white");
         // Use to switch toggleColour colours
         for (var i = 0; i < toToggle.length; i++) {
-            toToggle[i].classList.add("text-gray-800");
+            toToggle[i].classList.add("text-black");
             toToggle[i].classList.remove("text-white");
         }
         header.classList.add("shadow");
