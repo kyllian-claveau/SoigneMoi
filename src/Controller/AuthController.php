@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\LoginType;
 use App\Form\RegisterType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,8 +55,9 @@ class AuthController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserRepository $userRepository, APIController $apiController, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        $user = $apiController->getUserFromToken($request, $userRepository);
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user)->handleRequest($request);
 
@@ -75,6 +77,7 @@ class AuthController extends AbstractController
 
         return $this->render('public/Auth/register.html.twig', [
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 }
