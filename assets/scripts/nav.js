@@ -9,13 +9,13 @@ document.addEventListener("scroll", function () {
     /*Apply classes for slide in bar*/
     scrollpos = window.scrollY;
 
-    if (scrollpos > 10) {
+    if (scrollpos > 10 || !navMenuDiv.classList.contains("hidden")) {
         header.classList.add("bg-white");
         navaction.classList.remove("bg-white");
         navaction.classList.add("gradient");
         navaction.classList.remove("text-gray-800");
         navaction.classList.add("text-white");
-        //Use to switch toggleColour colours
+        // Use to switch toggleColour colours
         for (var i = 0; i < toToggle.length; i++) {
             toToggle[i].classList.add("text-gray-800");
             toToggle[i].classList.remove("text-white");
@@ -29,7 +29,7 @@ document.addEventListener("scroll", function () {
         navaction.classList.add("bg-white");
         navaction.classList.remove("text-white");
         navaction.classList.add("text-gray-800");
-        //Use to switch toggleColour colours
+        // Use to switch toggleColour colours
         for (var i = 0; i < toToggle.length; i++) {
             toToggle[i].classList.add("text-white");
             toToggle[i].classList.remove("text-gray-800");
@@ -48,19 +48,41 @@ document.onclick = check;
 function check(e) {
     var target = (e && e.target) || (event && event.srcElement);
 
-    //Nav Menu
+    // Nav Menu
     if (!checkParent(target, navMenuDiv)) {
-        // click NOT on the menu
+        // Click NOT on the menu
         if (checkParent(target, navMenu)) {
-            // click on the link
+            // Click on the link
             if (navMenuDiv.classList.contains("hidden")) {
                 navMenuDiv.classList.remove("hidden");
+                // Change text color to black and background to white when menu is open
+                header.classList.add("bg-white");
+                for (var i = 0; i < toToggle.length; i++) {
+                    toToggle[i].classList.add("text-black");
+                    toToggle[i].classList.remove("text-white");
+                }
             } else {
                 navMenuDiv.classList.add("hidden");
+                // Revert text color and background when menu is closed
+                if (scrollpos < 10) {
+                    header.classList.remove("bg-white");
+                }
+                for (var i = 0; i < toToggle.length; i++) {
+                    toToggle[i].classList.add("text-white");
+                    toToggle[i].classList.remove("text-black");
+                }
             }
         } else {
-            // click both outside link and outside menu, hide menu
+            // Click both outside link and outside menu, hide menu
             navMenuDiv.classList.add("hidden");
+            // Revert text color and background when menu is closed
+            if (scrollpos < 10) {
+                header.classList.remove("bg-white");
+            }
+            for (var i = 0; i < toToggle.length; i++) {
+                toToggle[i].classList.add("text-white");
+                toToggle[i].classList.remove("text-black");
+            }
         }
     }
 }
