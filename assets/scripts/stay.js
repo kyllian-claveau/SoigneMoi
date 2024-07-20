@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     specialtySelect.addEventListener('change', function() {
         const selectedSpecialtyId = this.value;
 
-        fetch(`/doctors/by-specialty/${selectedSpecialtyId}`)
+        fetch(`https://soignemoiproject.online/doctors/by-specialty/${selectedSpecialtyId}`)
             .then(response => response.json())
             .then(data => {
                 // Clear current doctor options
