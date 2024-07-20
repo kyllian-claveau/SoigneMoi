@@ -31,7 +31,7 @@ document.addEventListener("scroll", function () {
         navaction.classList.add("text-gray-800");
         // Use to switch toggleColour colours
         for (var i = 0; i < toToggle.length; i++) {
-            toToggle[i].classList.add("text-white");
+            toToggle[i].classList.add("text-black");
             toToggle[i].classList.remove("text-gray-800");
         }
 
