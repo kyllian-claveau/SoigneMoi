@@ -2,7 +2,10 @@
 
 namespace App\Controller\User\Dashboard;
 
+use App\Controller\APIController;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -10,8 +13,11 @@ use Symfony\Component\Routing\Attribute\Route;
 class DashboardController extends AbstractController
 {
 #[Route('/dashboard', name: 'app_user_dashboard')]
-    public function index(): Response
+    public function index(Request $request, UserRepository $userRepository, APIController $apiController): Response
     {
-        return $this->render('User/Dashboard/dashboard.html.twig');
+        $user = $apiController->getUserFromToken($request, $userRepository);
+        return $this->render('User/Dashboard/dashboard.html.twig', [
+            'user' => $user,
+        ]);
     }
 }
