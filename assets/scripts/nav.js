@@ -73,4 +73,3 @@ function checkParent(t, elm) {
     }
     return false;
 }
-
