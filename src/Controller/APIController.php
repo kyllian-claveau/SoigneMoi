@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Prescription;
 use App\Entity\Review;
 use App\Entity\Stay;
+use App\Entity\User;
 use App\Repository\StayRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,12 +22,15 @@ class APIController
     {
         $user = null;
         $token = $request->cookies->get('authToken');
-
         if ($token) {
             $payload = $this->decodeToken($token);
             if ($payload && isset($payload['id'])) {
                 $user = $userRepository->find($payload['id']);
             }
+        }
+        if (!$user instanceof User) {
+            $user = new User(); // Crée un utilisateur vide
+            $user->setRoles(['']);
         }
         return $user;
     }
