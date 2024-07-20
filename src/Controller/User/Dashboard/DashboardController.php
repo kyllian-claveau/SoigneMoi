@@ -22,7 +22,7 @@ class DashboardController extends AbstractController
         if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
             throw $this->createAccessDeniedException('Access denied');
         }
-        $stays = $entityManager->getRepository(Stay::class)->findBy(['user' => $this->getUser()]);
+        $stays = $entityManager->getRepository(Stay::class)->findBy(['user' => $user]);
 
         return $this->render('user/Stay/list.html.twig', [
             'stays' => $stays,
