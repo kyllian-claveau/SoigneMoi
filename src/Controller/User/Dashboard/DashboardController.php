@@ -16,7 +16,7 @@ class DashboardController extends AbstractController
     public function index(Request $request, UserRepository $userRepository, APIController $apiController): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
-        return $this->render('User/Dashboard/dashboard.html.twig', [
+        return $this->render('user/Dashboard/dashboard.html.twig', [
             'user' => $user,
         ]);
     }

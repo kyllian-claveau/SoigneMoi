@@ -37,7 +37,7 @@ document.addEventListener("scroll", function () {
 
         header.classList.remove("shadow");
         navcontent.classList.remove("bg-white");
-        navcontent.classList.add("bg-gray-100");
+        navcontent.classList.add("bg-white");
     }
 });
 
