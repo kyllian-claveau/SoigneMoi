@@ -57,18 +57,21 @@ class StayController extends AbstractController
     }
 
     #[Route('/user/stay/list', name: 'app_stay_list')]
-    public function list(EntityManagerInterface $entityManager): Response
+    public function list(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
     {
+        $user = $apiController->getUserFromToken($request, $userRepository);
         $stays = $entityManager->getRepository(Stay::class)->findBy(['user' => $this->getUser()]);
 
         return $this->render('User/Stay/list.html.twig', [
             'stays' => $stays,
+            'user' => $user,
         ]);
     }
 
     #[Route('/user/stay/list/over', name: 'app_stay_list_over')]
-    public function listOver(EntityManagerInterface $entityManager): Response
+    public function listOver(Request $request, UserRepository $userRepository, APIController $apiController,EntityManagerInterface $entityManager): Response
     {
+        $user = $apiController->getUserFromToken($request, $userRepository);
         $user = $this->getUser();
 
         // Récupérer les séjours passés
@@ -83,12 +86,14 @@ class StayController extends AbstractController
 
         return $this->render('User/Stay/listOver.html.twig', [
             'stays' => $stays,
+            'user' => $user,
         ]);
     }
 
     #[Route('/user/stay/list/now', name: 'app_stay_list_now')]
-    public function listNow(EntityManagerInterface $entityManager): Response
+    public function listNow(Request $request, UserRepository $userRepository, APIController $apiController, EntityManagerInterface $entityManager): Response
     {
+        $user = $apiController->getUserFromToken($request, $userRepository);
         $user = $this->getUser();
 
         // Récupérer les séjours en cours
@@ -104,12 +109,14 @@ class StayController extends AbstractController
 
         return $this->render('User/Stay/listNow.html.twig', [
             'stays' => $stays,
+            'user' => $user,
         ]);
     }
 
     #[Route('/user/stay/list/coming-soon', name: 'app_stay_list_coming_soon')]
-    public function listComingSoon(EntityManagerInterface $entityManager): Response
+    public function listComingSoon(Request $request, UserRepository $userRepository, APIController $apiController,EntityManagerInterface $entityManager): Response
     {
+        $user = $apiController->getUserFromToken($request, $userRepository);
         $user = $this->getUser();
 
         // Récupérer les séjours à venir
@@ -124,6 +131,7 @@ class StayController extends AbstractController
 
         return $this->render('User/Stay/listComingSoon.html.twig', [
             'stays' => $stays,
+            'user' => $user,
         ]);
     }
 

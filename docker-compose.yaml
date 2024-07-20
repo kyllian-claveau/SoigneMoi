@@ -1,7 +1,17 @@
+version: '3'
+
 services:
+  symfony:
+    image: shinsenter/symfony
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - database
+
   database:
-    container_name: database.soignemoi
-    image: mysql:latest
+    image: mysql:8.0
     ports:
       - "3306:3306"
     environment:
@@ -9,25 +19,16 @@ services:
       MYSQL_USER: ${DATABASE_USER:-soignemoi}
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD:-soignemoipassword}
       MYSQL_PASSWORD: ${DATABASE_PASSWORD:-soignemoipassword}
-      MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
-    networks:
-      - database
     volumes:
-      - ./volumes/soignemoi/database/data:/var/lib/mysql
+      - db_data:/var/lib/mysql
 
   phpmyadmin:
-    container_name: phpmyadmin.soignemoi
     image: phpmyadmin/phpmyadmin
     ports:
-      - "8090:80"
+      - "8080:80"
     environment:
       PMA_HOST: database
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD:-soignemoipassword}
-    networks:
-      - database
-
-networks:
-  database: {}
 
 volumes:
-  database_data:
+  db_data:
