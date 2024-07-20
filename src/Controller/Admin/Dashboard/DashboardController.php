@@ -19,7 +19,7 @@ class DashboardController extends AbstractController
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
             throw $this->createAccessDeniedException('Access denied');
         }
-        return $this->render('Admin/Dashboard/dashboard.html.twig', [
+        return $this->render('admin/Dashboard/dashboard.html.twig', [
             'user' => $user,
         ]);
     }
