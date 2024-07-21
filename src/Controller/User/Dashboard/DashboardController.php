@@ -20,7 +20,7 @@ class DashboardController extends AbstractController
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
         if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
-            throw $this->createAccessDeniedException('Access denied');
+            return $this->redirectToRoute('app_login');
         }
         $stays = $entityManager->getRepository(Stay::class)->findBy(['user' => $user]);
 
