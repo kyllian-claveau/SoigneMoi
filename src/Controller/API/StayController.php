@@ -2,15 +2,12 @@
 
 namespace App\Controller\API;
 
-use App\Controller\APIController;
 use App\Entity\Prescription;
 use App\Entity\Review;
 use App\Entity\Stay;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use Psr\Log\LoggerInterface;
@@ -29,15 +26,12 @@ class StayController extends AbstractController
     }
 
     #[Route('/api/stays', name: 'get_all_stays', methods: ['GET'])]
-    public function getAllStays(Request $request, UserRepository $userRepository, APIController $apiController): JsonResponse
+    public function getAllStays(): JsonResponse
     {
-        // Ajout de logs pour le débogage
-        error_log('getAllStays called');
-
-        $user = $apiController->getUserFromToken($request, $userRepository);
-        if (!$user || !in_array('ROLE_SECRETARY', $user->getRoles())) {
-            error_log('Access denied: Invalid user or role');
-            throw $this->createAccessDeniedException('Access denied');
+        // Vérifiez que l'utilisateur est authentifié
+        $user = $this->security->getUser();
+        if (!$user) {
+            return new JsonResponse(['message' => 'Invalid credentials.'], 401);
         }
 
         // Récupérez la date d'aujourd'hui
