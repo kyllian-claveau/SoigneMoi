@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajout de la meta viewport -->
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon-16x16.png') }}">
@@ -89,9 +89,9 @@
     </div>
     <hr class="border-b border-gray-100 opacity-25 my-0 py-0"/>
 </nav>
-
+<div class="flex-grow">
 {% block content %}{% endblock %}
-
+</div>
 <!--Footer-->
 <hr class="border-t border-gray-100 opacity-50 my-0 py-0"/>
 <footer class="bg-white">
