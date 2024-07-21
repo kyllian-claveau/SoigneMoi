@@ -12,18 +12,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
-use Psr\Log\LoggerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 class StayController extends AbstractController
 {
     private $entityManager;
     private $security;
-    private $logger;
-
     private $jwtEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager, Security $security,JWTEncoderInterface $jwtEncoder, LoggerInterface $logger)
+    public function __construct(EntityManagerInterface $entityManager, Security $security,JWTEncoderInterface $jwtEncoder)
     {
         $this->entityManager = $entityManager;
         $this->security = $security;
@@ -93,13 +90,10 @@ class StayController extends AbstractController
     #[Route('/api/stays/{id}/details', name: 'get_stay_details', methods: ['POST'])]
     public function getStayDetails(int $id, Request $request, UserRepository $userRepository): JsonResponse
     {
-        $this->logger->info('Fetching stay details for ID: ' . $id);
-
         $content = json_decode($request->getContent(), true);
         $token = $content['token'] ?? null;
 
         if (!$token) {
-            $this->logger->error('Invalid credentials');
             return new JsonResponse(['message' => 'Invalid credentials.'], 401);
         }
 
@@ -107,39 +101,30 @@ class StayController extends AbstractController
         try {
             $decodedToken = $this->jwtEncoder->decode($token);
         } catch (\Exception $e) {
-            $this->logger->error('Invalid token: ' . $e->getMessage());
             return new JsonResponse(['message' => 'Invalid token.'], 401);
         }
 
         if (!$decodedToken) {
-            $this->logger->error('Invalid token');
             return new JsonResponse(['message' => 'Invalid token.'], 401);
         }
 
         // Extraire l'identifiant de l'utilisateur depuis le token
         $userId = $decodedToken['id'];
-        $this->logger->info('User ID from token: ' . $userId);
-
         // Récupérer l'utilisateur depuis la base de données
         $user = $userRepository->find($userId);
 
         if (!$user) {
-            $this->logger->error('User not found for ID: ' . $userId);
             return new JsonResponse(['message' => 'Invalid credentials.'], 401);
         }
 
         // Récupérer les détails du séjour
         $stay = $this->entityManager->getRepository(Stay::class)->find($id);
         if (!$stay) {
-            $this->logger->error('Stay not found for ID: ' . $id);
             return new JsonResponse(['message' => 'Stay not found'], 404);
         }
 
-        // Récupérer les prescriptions et les avis
         $prescriptions = $this->entityManager->getRepository(Prescription::class)->findBy(['stay' => $id], ['date' => 'ASC']);
         $reviews = $this->entityManager->getRepository(Review::class)->findBy(['stay' => $id], ['date' => 'ASC']);
-
-        $this->logger->info('Prescriptions and Reviews retrieved.');
 
         // Formater les données des prescriptions
         $prescriptionData = [];
@@ -168,7 +153,6 @@ class StayController extends AbstractController
             ];
         }
 
-        // Formater les données du séjour
         $stayData = [
             'id' => $stay->getId(),
             'user_firstname' => $stay->getUser()->getFirstname(),
@@ -180,9 +164,6 @@ class StayController extends AbstractController
             'prescriptions' => $prescriptionData,
             'reviews' => $reviewData,
         ];
-
-        $this->logger->info('Stay details formatted successfully for ID: ' . $id);
-
         return new JsonResponse($stayData, 200);
     }
 }
