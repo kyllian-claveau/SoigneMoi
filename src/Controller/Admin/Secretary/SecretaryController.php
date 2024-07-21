@@ -62,7 +62,7 @@ class SecretaryController extends AbstractController
         // Utilisation de findBy pour récupérer tous les utilisateurs ayant le rôle ROLE_DOCTOR
         $secretaries = $userRepository->findSecretaries();
 
-        return $this->render('admin/Doctor/list.html.twig', [
+        return $this->render('admin/Secretary/list.html.twig', [
             'secretaries' => $secretaries,
             'user' => $user,
         ]);
