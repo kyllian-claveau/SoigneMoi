@@ -5,12 +5,15 @@ namespace App\Controller\API;
 use App\Entity\Prescription;
 use App\Entity\Review;
 use App\Entity\Stay;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use Psr\Log\LoggerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 class StayController extends AbstractController
 {
@@ -18,26 +21,48 @@ class StayController extends AbstractController
     private $security;
     private $logger;
 
-    public function __construct(EntityManagerInterface $entityManager, Security $security, LoggerInterface $logger)
+    private $jwtEncoder;
+
+    public function __construct(EntityManagerInterface $entityManager, Security $security,JWTEncoderInterface $jwtEncoder, LoggerInterface $logger)
     {
         $this->entityManager = $entityManager;
         $this->security = $security;
-        $this->logger = $logger;
+        $this->jwtEncoder = $jwtEncoder;
     }
 
-    #[Route('/api/stays', name: 'get_all_stays', methods: ['GET'])]
-    public function getAllStays(): JsonResponse
+    #[Route('/api/stays', name: 'get_all_stays', methods: ['POST'])]
+    public function getAllStays(Request $request, UserRepository $userRepository): JsonResponse
     {
-        // Vérifiez que l'utilisateur est authentifié
-        $user = $this->security->getUser();
+        $content = json_decode($request->getContent(), true);
+        $token = $content['token'] ?? null;
+
+        if (!$token) {
+            return new JsonResponse(['message' => 'Invalid credentials.'], 401);
+        }
+
+        // Décoder le token
+        $token = str_replace('Bearer ', '', $token); // Enlever 'Bearer ' du token s'il est présent
+        $decodedToken = $this->jwtEncoder->decode($token);
+
+        if (!$decodedToken) {
+            return new JsonResponse(['message' => 'Invalid token.'], 401);
+        }
+
+        // Extraire l'identifiant de l'utilisateur depuis le token
+        $userId = $decodedToken['id'];
+
+        // Récupérer l'utilisateur depuis la base de données
+        $user = $userRepository->find($userId);
+
         if (!$user) {
             return new JsonResponse(['message' => 'Invalid credentials.'], 401);
         }
-        // Récupérez la date d'aujourd'hui
+
+        // Récupérer la date d'aujourd'hui
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
 
-        // Récupérez tous les séjours qui commencent ou se terminent aujourd'hui
+        // Récupérer tous les séjours qui commencent ou se terminent aujourd'hui
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('s')
             ->from(Stay::class, 's')
@@ -47,7 +72,7 @@ class StayController extends AbstractController
 
         $stays = $qb->getQuery()->getResult();
 
-        // Formatez les données des séjours
+        // Formater les données des séjours
         $stayData = [];
         foreach ($stays as $stay) {
             $stayData[] = [
