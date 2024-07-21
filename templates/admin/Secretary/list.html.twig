@@ -10,7 +10,7 @@
         </div>
         <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <a href="{{ path('app_secretary_create') }}" type="button"
-               class="block rounded-md bg-secondary px-3 py-2 text-center text-sm font-semibold text-blue-800 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+               class="block rounded-md bg-primary px-3 py-2 text-center text-sm font-semibold text-blue-800 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -29,17 +29,13 @@
                             <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:pl-6">Prénom
                             </th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Nom</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Action</th>
-                        </tr>
+                            </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 bg-white">
                         {% for secretary in secretaries %}
                         <tr>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ secretary.firstName }}</td>
                             <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ secretary.lastName }}</td>
-                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                <a href="#" class="hover:text-red-300 text-red-500">Supprimer</a>
-                            </td>
                         </tr>
                         {% else %}
                             <tr>
