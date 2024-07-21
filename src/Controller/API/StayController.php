@@ -74,7 +74,7 @@ class StayController extends AbstractController
                 'user_lastname' => $stay->getUser()->getLastname(),
                 'reason' => $stay->getReason(),
                 'start_date' => $stay->getStartDate()->format('Y-m-d'),
-                'end_date' => $stay->getEndDate()->format('Y-m-d'),
+                'end_date' => $stay->getEndDate() ? $stay->getEndDate()->format('Y-m-d') : null,
             ];
         }
         return new JsonResponse($stayData, 200);
