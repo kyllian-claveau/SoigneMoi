@@ -128,10 +128,12 @@ class StayController extends AbstractController
                 'id' => $stay->getId(),
                 'user_firstname' => $stay->getUser()->getFirstname(),
                 'user_lastname' => $stay->getUser()->getLastname(),
-                'specialty_id' => $stay->getSpecialty()->getId(),
+                'doctor_firstname' => $stay->getDoctor()->getFirstname(),
+                'doctor_lastname' => $stay->getDoctor()->getLastname(),
+                'specialty_name' => $stay->getSpecialty()->getName(),
                 'reason' => $stay->getReason(),
-                'start_date' => $stay->getStartDate()->format('Y-m-d'),
-                'end_date' => $stay->getEndDate() ? $stay->getEndDate()->format('Y-m-d') : null,
+                'start_date' => $stay->getStartDate()->format('d-m-Y'),
+                'end_date' => $stay->getEndDate() ? $stay->getEndDate()->format('d-m-Y') : null,
             ];
         }
 
@@ -211,10 +213,10 @@ class StayController extends AbstractController
             'user_lastname' => $stay->getUser()->getLastname(),
             'doctor_firstname' => $stay->getDoctor()->getFirstname(),
             'doctor_lastname' => $stay->getDoctor()->getLastname(),
-            'specialty_id' => $stay->getSpecialty()->getName(),
+            'specialty_name' => $stay->getSpecialty()->getName(),
             'reason' => $stay->getReason(),
-            'start_date' => $stay->getStartDate()->format('Y-m-d'),
-            'end_date' => $stay->getEndDate() ? $stay->getEndDate()->format('Y-m-d') : null,
+            'start_date' => $stay->getStartDate()->format('d-m-Y'),
+            'end_date' => $stay->getEndDate() ? $stay->getEndDate()->format('d-m-Y') : null,
             'prescriptions' => $prescriptionData,
             'reviews' => $reviewData,
         ];
