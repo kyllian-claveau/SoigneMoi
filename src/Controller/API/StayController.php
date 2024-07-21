@@ -104,7 +104,12 @@ class StayController extends AbstractController
         }
 
         // Décoder le token
-        $decodedToken = $this->jwtEncoder->decode($token);
+        try {
+            $decodedToken = $this->jwtEncoder->decode($token);
+        } catch (\Exception $e) {
+            $this->logger->error('Invalid token: ' . $e->getMessage());
+            return new JsonResponse(['message' => 'Invalid token.'], 401);
+        }
 
         if (!$decodedToken) {
             $this->logger->error('Invalid token');
@@ -113,6 +118,7 @@ class StayController extends AbstractController
 
         // Extraire l'identifiant de l'utilisateur depuis le token
         $userId = $decodedToken['id'];
+        $this->logger->info('User ID from token: ' . $userId);
 
         // Récupérer l'utilisateur depuis la base de données
         $user = $userRepository->find($userId);
