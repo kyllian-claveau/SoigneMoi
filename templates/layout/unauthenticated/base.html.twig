@@ -17,7 +17,7 @@
         {{ encore_entry_script_tags('scripts/login') }}
     {% endblock %}
 </head>
-<body class="{% if app.request.attributes.get('_route') == 'app_index' %}leading-normal tracking-normal text-white gradient{% endif %}">
+<body class="{% if app.request.attributes.get('_route') == 'app_index' %} min-h-screen leading-normal tracking-normal text-white gradient{% endif %}">
 <nav id="header" class="fixed w-full z-30 top-0 text-white transition-all duration-300 ease-in-out">
     <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2 px-4">
         <div class="pl-4 flex items-center">
