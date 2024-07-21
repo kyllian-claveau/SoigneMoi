@@ -189,9 +189,9 @@ class StayController extends AbstractController
             }
             $prescriptionData[] = [
                 'id' => $prescription->getId(),
-                'date' => $prescription->getDate()->format('Y-m-d'),
-                'start_date' => $prescription->getStartDate()->format('Y-m-d'),
-                'end_date' => $prescription->getEndDate()->format('Y-m-d'),
+                'date' => $prescription->getDate()->format('d-m-Y'),
+                'start_date' => $prescription->getStartDate()->format('d-m-Y'),
+                'end_date' => $prescription->getEndDate()->format('d-m-Y'),
                 'medications' => $medications,
             ];
         }
@@ -202,7 +202,7 @@ class StayController extends AbstractController
             $reviewData[] = [
                 'id' => $review->getId(),
                 'title' => $review->getTitle(),
-                'date' => $review->getDate()->format('Y-m-d'),
+                'date' => $review->getDate()->format('d-m-Y'),
                 'description' => $review->getDescription(),
             ];
         }
