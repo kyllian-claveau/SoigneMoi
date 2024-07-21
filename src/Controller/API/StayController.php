@@ -27,6 +27,58 @@ class StayController extends AbstractController
         $this->jwtEncoder = $jwtEncoder;
     }
 
+    #[Route('/api/doctor/{id}/stays', name: 'app_stay_doctor_list', methods: ['POST'])]
+    public function list(int $id, Request $request, UserRepository $userRepository): JsonResponse
+    {
+        $content = json_decode($request->getContent(), true);
+        $token = $content['token'] ?? null;
+
+        if (!$token) {
+            return new JsonResponse(['message' => 'Invalid credentials.'], 401);
+        }
+
+        // Décoder le token
+        try {
+            $decodedToken = $this->jwtEncoder->decode($token);
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => 'Invalid token.'], 401);
+        }
+
+        if (!$decodedToken) {
+            return new JsonResponse(['message' => 'Invalid token.'], 401);
+        }
+
+        // Extraire l'identifiant de l'utilisateur depuis le token
+        $userId = $decodedToken['id'];
+
+        // Récupérer l'utilisateur depuis la base de données
+        $user = $userRepository->find($userId);
+
+        if (!$user) {
+            return new JsonResponse(['message' => 'Invalid credentials.'], 401);
+        }
+
+        if ($user->getId() !== $id) {
+            return new JsonResponse(['message' => 'You do not have access to this resource.'], 403);
+        }
+
+        $stays = $this->entityManager->getRepository(Stay::class)->findBy(['doctor' => $id]);
+
+        $stayData = [];
+        foreach ($stays as $stay) {
+            $stayData[] = [
+                'id' => $stay->getId(),
+                'doctor_id' => $stay->getDoctor()->getId(),
+                'user_id' => $stay->getUser()->getId(),
+                'user_firstname' => $stay->getUser()->getFirstname(),
+                'user_lastname' => $stay->getUser()->getLastname(),
+                'reason' => $stay->getReason(),
+                'start_date' => $stay->getStartDate()->format('Y-m-d'),
+                'end_date' => $stay->getEndDate()->format('Y-m-d'),
+            ];
+        }
+        return new JsonResponse($stayData, 200);
+    }
     #[Route('/api/stays', name: 'get_all_stays', methods: ['POST'])]
     public function getAllStays(Request $request, UserRepository $userRepository): JsonResponse
     {
