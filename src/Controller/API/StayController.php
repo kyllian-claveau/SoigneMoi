@@ -31,8 +31,12 @@ class StayController extends AbstractController
     #[Route('/api/stays', name: 'get_all_stays', methods: ['GET'])]
     public function getAllStays(Request $request, UserRepository $userRepository, APIController $apiController): JsonResponse
     {
+        // Ajout de logs pour le débogage
+        error_log('getAllStays called');
+
         $user = $apiController->getUserFromToken($request, $userRepository);
         if (!$user || !in_array('ROLE_SECRETARY', $user->getRoles())) {
+            error_log('Access denied: Invalid user or role');
             throw $this->createAccessDeniedException('Access denied');
         }
 
