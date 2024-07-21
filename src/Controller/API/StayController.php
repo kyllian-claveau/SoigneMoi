@@ -90,32 +90,52 @@ class StayController extends AbstractController
     }
 
 
-    #[Route('/api/stays/{id}/details', name: 'get_stay_details', methods: ['GET'])]
-    public function getStayDetails(int $id): JsonResponse
+    #[Route('/api/stays/{id}/details', name: 'get_stay_details', methods: ['POST'])]
+    public function getStayDetails(int $id, Request $request, UserRepository $userRepository): JsonResponse
     {
         $this->logger->info('Fetching stay details for ID: ' . $id);
 
-        // Vérifiez que l'utilisateur est authentifié
-        $user = $this->security->getUser();
-        if (!$user) {
+        $content = json_decode($request->getContent(), true);
+        $token = $content['token'] ?? null;
+
+        if (!$token) {
             $this->logger->error('Invalid credentials');
             return new JsonResponse(['message' => 'Invalid credentials.'], 401);
         }
 
-        // Récupérez les détails du séjour
+        // Décoder le token
+        $decodedToken = $this->jwtEncoder->decode($token);
+
+        if (!$decodedToken) {
+            $this->logger->error('Invalid token');
+            return new JsonResponse(['message' => 'Invalid token.'], 401);
+        }
+
+        // Extraire l'identifiant de l'utilisateur depuis le token
+        $userId = $decodedToken['id'];
+
+        // Récupérer l'utilisateur depuis la base de données
+        $user = $userRepository->find($userId);
+
+        if (!$user) {
+            $this->logger->error('User not found for ID: ' . $userId);
+            return new JsonResponse(['message' => 'Invalid credentials.'], 401);
+        }
+
+        // Récupérer les détails du séjour
         $stay = $this->entityManager->getRepository(Stay::class)->find($id);
         if (!$stay) {
             $this->logger->error('Stay not found for ID: ' . $id);
             return new JsonResponse(['message' => 'Stay not found'], 404);
         }
 
-        // Récupérez les prescriptions et les avis
+        // Récupérer les prescriptions et les avis
         $prescriptions = $this->entityManager->getRepository(Prescription::class)->findBy(['stay' => $id], ['date' => 'ASC']);
         $reviews = $this->entityManager->getRepository(Review::class)->findBy(['stay' => $id], ['date' => 'ASC']);
 
         $this->logger->info('Prescriptions and Reviews retrieved.');
 
-        // Formatez les données des prescriptions
+        // Formater les données des prescriptions
         $prescriptionData = [];
         foreach ($prescriptions as $prescription) {
             $medications = $prescription->getMedications();
@@ -131,7 +151,7 @@ class StayController extends AbstractController
             ];
         }
 
-        // Formatez les données des avis
+        // Formater les données des avis
         $reviewData = [];
         foreach ($reviews as $review) {
             $reviewData[] = [
@@ -142,7 +162,7 @@ class StayController extends AbstractController
             ];
         }
 
-        // Formatez les données du séjour
+        // Formater les données du séjour
         $stayData = [
             'id' => $stay->getId(),
             'user_firstname' => $stay->getUser()->getFirstname(),
