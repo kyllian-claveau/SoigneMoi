@@ -18,40 +18,46 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class APIController
 {
-    public function getUserFromToken(Request $request, UserRepository $userRepository)
+    #[Route('/api/stays', name: 'get_all_stays', methods: ['GET'])]
+    public function getAllStays(Request $request, UserRepository $userRepository, APIController $apiController): JsonResponse
     {
-        $user = null;
-        $token = $request->cookies->get('authToken');
-        if ($token) {
-            $payload = $this->decodeToken($token);
-            if ($payload && isset($payload['id'])) {
-                $user = $userRepository->find($payload['id']);
-            }
-        }
-        if (!$user instanceof User) {
-            $user = new User(); // Crée un utilisateur vide
-            $user->setRoles(['']);
-        }
-        return $user;
-    }
-    private function decodeToken($token)
-    {
-        $parts = explode('.', $token);
-        if (count($parts) != 3) {
-            return null;
+        // Ajout de logs pour le débogage
+        error_log('getAllStays called');
+
+        $user = $apiController->getUserFromToken($request, $userRepository);
+        if (!$user || !in_array('ROLE_SECRETARY', $user->getRoles())) {
+            error_log('Access denied: Invalid user or role');
+            throw $this->createAccessDeniedException('Access denied');
         }
 
-        $payload = json_decode(base64_decode($parts[1]), true);
+        // Récupérez la date d'aujourd'hui
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
 
-        if (!$payload) {
-            return null;
+        // Récupérez tous les séjours qui commencent ou se terminent aujourd'hui
+        $qb = $this->entityManager->createQueryBuilder();
+        $qb->select('s')
+            ->from(Stay::class, 's')
+            ->where('s.startDate = :today')
+            ->orWhere('s.endDate = :today')
+            ->setParameter('today', $today);
+
+        $stays = $qb->getQuery()->getResult();
+
+        // Formatez les données des séjours
+        $stayData = [];
+        foreach ($stays as $stay) {
+            $stayData[] = [
+                'id' => $stay->getId(),
+                'user_firstname' => $stay->getUser()->getFirstname(),
+                'user_lastname' => $stay->getUser()->getLastname(),
+                'specialty_id' => $stay->getSpecialty()->getId(),
+                'reason' => $stay->getReason(),
+                'start_date' => $stay->getStartDate()->format('Y-m-d'),
+                'end_date' => $stay->getEndDate() ? $stay->getEndDate()->format('Y-m-d') : null,
+            ];
         }
 
-        // Check if token is expired
-        if (isset($payload['exp']) && $payload['exp'] < time()) {
-            return null;
-        }
-
-        return $payload;
+        return new JsonResponse($stayData, 200);
     }
 }
