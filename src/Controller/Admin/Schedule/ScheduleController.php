@@ -23,7 +23,7 @@ class ScheduleController extends AbstractController
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
-            throw $this->createAccessDeniedException('Access denied');
+            return $this->redirectToRoute('app_login');
         }
         $doctor = $entityManager->getRepository(User::class)->find($doctorId);
         if (!$doctor) {
@@ -56,7 +56,7 @@ class ScheduleController extends AbstractController
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
-            throw $this->createAccessDeniedException('Access denied');
+            return $this->redirectToRoute('app_login');
         }
         // Récupérer le médecin en fonction de l'ID
         $doctor = $entityManager->getRepository(User::class)->find($id);
@@ -103,7 +103,7 @@ class ScheduleController extends AbstractController
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
-            throw $this->createAccessDeniedException('Access denied');
+            return $this->redirectToRoute('app_login');
         }
         $schedules = $entityManager->getRepository(Schedule::class)->findAll();
 

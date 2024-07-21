@@ -20,7 +20,7 @@ class SpecialtyController extends AbstractController
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
-            throw $this->createAccessDeniedException('Access denied');
+            return $this->redirectToRoute('app_login');
         }
         $specialty = new Specialty();
         $form = $this->createForm(SpecialtyType::class, $specialty);
@@ -46,7 +46,7 @@ class SpecialtyController extends AbstractController
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
-            throw $this->createAccessDeniedException('Access denied');
+            return $this->redirectToRoute('app_login');
         }
         $specialtys = $entityManager->getRepository(Specialty::class)->findAll();
         return $this->render('admin/Specialty/list.html.twig', [

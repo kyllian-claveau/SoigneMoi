@@ -24,7 +24,7 @@ class DoctorController extends AbstractController
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
-            throw $this->createAccessDeniedException('Access denied');
+            return $this->redirectToRoute('app_login');
         }
         $doctor = new User();
         $form = $this->createForm(DoctorType::class, $doctor)->handleRequest($request);
@@ -66,7 +66,7 @@ class DoctorController extends AbstractController
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
         if (!$user || !in_array('ROLE_ADMIN', $user->getRoles())) {
-            throw $this->createAccessDeniedException('Access denied');
+            return $this->redirectToRoute('app_login');
         }
         // Utilisation de findBy pour récupérer tous les utilisateurs ayant le rôle ROLE_DOCTOR
         $doctors = $userRepository->findDoctors();
