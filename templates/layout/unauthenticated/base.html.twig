@@ -48,7 +48,7 @@
                        href="{{ path('app_stay_create') }}">Séjour</a>
                 </li>
                 <li class="mr-3">
-                    <a class="toggleColour inline-block text-black no-underline hover:text-gray-800 py-2 px-4" href="#">Contact</a>
+                    <a class="toggleColour inline-block text-black no-underline hover:text-gray-800 py-2 px-4" href="{{ path('app_contact') }}">Contact</a>
                 </li>
                 {% if 'ROLE_ADMIN' in user.roles %}
                     <li class="mr-3 lg:hidden">
