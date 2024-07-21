@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajout de la meta viewport -->
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png') }}">
@@ -17,29 +17,35 @@
         {{ encore_entry_script_tags('scripts/login') }}
     {% endblock %}
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="{% if app.request.attributes.get('_route') == 'app_index' %} min-h-screen leading-normal tracking-normal text-white gradient{% endif %}">
 <nav id="header" class="fixed w-full z-30 top-0 text-white transition-all duration-300 ease-in-out">
     <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2 px-4">
         <div class="pl-4 flex items-center">
-            <a id="brandname" class="toggleColour text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="{{ path('app_index') }}">
+            <a id="brandname"
+               class="toggleColour text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl"
+               href="{{ path('app_index') }}">
                 <img src="{{ asset('images/logo.png') }}" class="h-10 inline">
             </a>
         </div>
         <div class="block lg:hidden pr-4">
-            <button id="nav-toggle" class="flex items-center p-1 text-black focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+            <button id="nav-toggle"
+                    class="flex items-center p-1 text-black focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                 <svg class="fill-current h-6 w-6" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <title>Menu</title>
                     <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
                 </svg>
             </button>
         </div>
-        <div id="nav-content" class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 lg:bg-transparent text-black lg:p-0 z-20 bg-white">
+        <div id="nav-content"
+             class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 lg:bg-transparent text-black lg:p-0 z-20 bg-white">
             <ul class="list-reset lg:flex justify-end flex-1 items-center">
                 <li class="mr-3">
-                    <a class="toggleColour inline-block py-2 px-4 text-black no-underline hover:text-gray-800 font-bold" href="{{ path('app_index') }}">Accueil</a>
+                    <a class="toggleColour inline-block py-2 px-4 text-black no-underline hover:text-gray-800 font-bold"
+                       href="{{ path('app_index') }}">Accueil</a>
                 </li>
                 <li class="mr-3">
-                    <a class="toggleColour inline-block text-black no-underline hover:text-gray-800 py-2 px-4" href="{{ path('app_stay_create') }}">Séjour</a>
+                    <a class="toggleColour inline-block text-black no-underline hover:text-gray-800 py-2 px-4"
+                       href="{{ path('app_stay_create') }}">Séjour</a>
                 </li>
                 <li class="mr-3">
                     <a class="toggleColour inline-block text-black no-underline hover:text-gray-800 py-2 px-4" href="{{ path('app_contact') }}">Contact</a>
@@ -63,22 +69,28 @@
                 {% endif %}
             </ul>
             {% if 'ROLE_ADMIN' in user.roles %}
-                <a id="navAction" class="hidden lg:inline-block mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-2 px-6 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out" href="{{ path('app_admin_dashboard') }}">Bonjour {{ user.firstname }}</a>
+                <a id="navAction"
+                   class="hidden lg:inline-block mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-2 px-6 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                   href="{{ path('app_admin_dashboard') }}">Bonjour {{ user.firstname }}</a>
             {% elseif 'ROLE_DOCTOR' in user.roles %}
-                <a id="navAction" class="hidden lg:inline-block mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-2 px-6 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out" href="{{ path('app_user_dashboard') }}">Bonjour {{ user.firstname }}</a>
+                <a id="navAction"
+                   class="hidden lg:inline-block mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-2 px-6 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                   href="{{ path('app_user_dashboard') }}">Bonjour {{ user.firstname }}</a>
             {% elseif 'ROLE_USER' in user.roles %}
-                <a id="navAction" class="hidden lg:inline-block mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-2 px-6 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out" href="{{ path('app_user_dashboard') }}">Bonjour {{ user.firstname }}</a>
+                <a id="navAction"
+                   class="hidden lg:inline-block mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-2 px-6 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                   href="{{ path('app_user_dashboard') }}">Bonjour {{ user.firstname }}</a>
             {% else %}
-                <a id="navAction" class="hidden lg:inline-block mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-2 px-6 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out" href="{{ path('app_login') }}">Connexion</a>
+                <a id="navAction"
+                   class="hidden lg:inline-block mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-2 px-6 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
+                   href="{{ path('app_login') }}">Connexion</a>
             {% endif %}
         </div>
     </div>
     <hr class="border-b border-gray-100 opacity-25 my-0 py-0"/>
 </nav>
 
-<div class="flex-grow">
-    {% block content %}{% endblock %}
-</div>
+{% block content %}{% endblock %}
 
 <!--Footer-->
 <hr class="border-t border-gray-100 opacity-50 my-0 py-0"/>
