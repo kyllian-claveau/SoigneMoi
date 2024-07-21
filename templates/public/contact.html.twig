@@ -1,0 +1,16 @@
+{% extends 'layout/unauthenticated/base.html.twig' %}
+
+{% block title %}Contactez-nous{% endblock %}
+
+{% block content %}
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 pt-24">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md text-center">
+            <img class="mx-auto h-20 w-auto" src="{{asset('images/logo.png')}}" alt="SoigneMoi">
+            <h2 class="mt-6 text-4xl font-bold tracking-tight text-gray-900">Contactez-nous</h2>
+            <p class="mt-6 text-lg text-gray-700">Nous sommes là pour répondre à toutes vos questions et vous fournir l'assistance nécessaire. N'hésitez pas à nous contacter à l'adresse email ci-dessous :</p>
+            <a href="mailto:contact@soignemoi.online" class="mt-4 text-indigo-600 text-2xl font-medium">contact@soignemoi.online</a>
+            <p class="mt-6 text-lg text-gray-700">Nous nous efforçons de répondre à tous les messages dans un délai de 24 heures.</p>
+            <p class="mt-6 text-lg text-gray-700">Merci de votre confiance et à bientôt !</p>
+        </div>
+    </div>
+{% endblock %}
