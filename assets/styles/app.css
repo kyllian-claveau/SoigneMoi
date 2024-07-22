@@ -3,6 +3,13 @@
 @tailwind utilities;
 @import "~flatpickr/dist/flatpickr.min.css";
 
+.bg-primary{
+    background-color: #E01D5B;
+
+}
+.bg-secondary{
+    background-color: #481C4B;
+}
 .gradient {
     background: linear-gradient(90deg, #E01D5B 0%, #481C4B 100%);
 }
