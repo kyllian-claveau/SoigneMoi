@@ -16,7 +16,7 @@
 </head>
 <body class="bg-white text-black antialiased">
 <!-- Header -->
-<header class="fixed w-full flex items-center justify-between h-14 bg-secondary text-black z-10">
+<header class="fixed w-full flex items-center justify-between h-14 bg-secondary text-white z-10">
     <div class="flex items-center justify-start pl-3 w-14 md:w-64 h-14">
         <button id="menu-button" class="md:hidden">☰</button>
         <span class="hidden md:block">Bienvenue {{ user.firstname }} {{ user.lastname }} !</span>
@@ -43,12 +43,12 @@
     </div>
 </header>
 <!-- Sidebar -->
-<aside id="sidebar" class="fixed top-14 left-0 w-64 bg-secondary text-black h-full transition-transform transform -translate-x-full md:translate-x-0 z-10">
+<aside id="sidebar" class="fixed top-14 left-0 w-64 bg-secondary text-white h-full transition-transform transform -translate-x-full md:translate-x-0 z-10">
     <ul class="space-y-2 p-4">
-        <li><a href="{{ path('app_user_dashboard') }}" class="flex items-center p-2 hover:bg-blue-800"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Historique des séjours</a></li>
-        <li><a href="{{ path('app_stay_list_over') }}" class="flex items-center p-2 hover:bg-blue-800"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 4.5 15 15m0 0V8.25m0 11.25H8.25"/></svg>Séjours passés</a></li>
-        <li><a href="{{ path('app_stay_list_now') }}" class="flex items-center p-2 hover:bg-blue-800"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"/></svg>Séjours en cours</a></li>
-        <li><a href="{{ path('app_stay_list_coming_soon') }}" class="flex items-center p-2 hover:bg-blue-800"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"/></svg>Séjours à venir</a></li>
+        <li><a href="{{ path('app_user_dashboard') }}" class="flex items-center p-2 hover:bg-primary"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Historique des séjours</a></li>
+        <li><a href="{{ path('app_stay_list_over') }}" class="flex items-center p-2 hover:bg-primary"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 4.5 15 15m0 0V8.25m0 11.25H8.25"/></svg>Séjours passés</a></li>
+        <li><a href="{{ path('app_stay_list_now') }}" class="flex items-center p-2 hover:bg-primary"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"/></svg>Séjours en cours</a></li>
+        <li><a href="{{ path('app_stay_list_coming_soon') }}" class="flex items-center p-2 hover:bg-primary"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 mr-2"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"/></svg>Séjours à venir</a></li>
     </ul>
 </aside>
 <!-- Main content -->
