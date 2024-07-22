@@ -13,19 +13,15 @@
                 <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                     <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
                         <table class="min-w-full divide-y divide-primary">
-                            <thead class="bg-secondary text-blue-800">
+                            <thead class="bg-secondary text-white">
                             <tr>
                                 <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Médecin</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold">Action</th>
-                            </tr>
+                               </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200 bg-white">
                             {% for schedule in schedules %}
                                 <tr>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-blue-500"><a href="{{ path('app_doctor_show',{'id': schedule.doctor.id}) }}">{{ schedule.doctor.firstName }} {{ schedule.doctor.lastName }}</a></td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                        <a href="#" class="hover:text-red-300 text-red-500">Supprimer</a>
-                                    </td>
                                 </tr>
                             {% else %}
                                 <tr>
