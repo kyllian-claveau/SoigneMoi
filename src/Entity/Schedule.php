@@ -27,6 +27,12 @@ class Schedule
         return $this->id;
     }
 
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function __construct()
     {
         $this->stays = new ArrayCollection();
