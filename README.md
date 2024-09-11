@@ -21,6 +21,7 @@
     <li>🐘 PHP</li>
     <li>📦 Node.js et npm</li>
     <li>🌐 Symfony CLI</li>
+    <li>🔐 OpenSSL</li> <!-- Ajout d'OpenSSL -->
 </ul>
 
 <h2>⚙️ Instructions de configuration</h2>
@@ -60,8 +61,28 @@ export PATH="$HOME/.symfony/bin:$PATH"
 php bin/console doctrine:migrations:migrate
         </code></pre>
     </li>
+    <li>Créer le fichier `.env.local` à la racine du projet et y ajouter les variables d'environnement nécessaires, notamment celles pour la connexion à MySQL et les clés JWT.</li>
+    <li>Ajouter l'URL pour la connexion MySQL dans le fichier `.env.local` :
+        <pre><code>DATABASE_URL="mysql://soignemoi:soignemoipassword@127.0.0.1:3306/soignemoiproject"
+        </code></pre>
+    </li>
+    <li>Générer les clés JWT (publique et privée) avec OpenSSL :
+        <pre><code>mkdir -p config/jwt
+openssl genpkey -algorithm RSA -out config/jwt/private.pem -aes256
+openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
+        </code></pre>
+    </li>
+    <li>Modifier le fichier `.env.local` pour inclure les variables suivantes :
+        <pre><code>JWT_PASSPHRASE=VOTREPASSPHRASE
+JWT_PRIVATE_KEY_PATH=%kernel.project_dir%/config/jwt/private.pem
+JWT_PUBLIC_KEY_PATH=%kernel.project_dir%/config/jwt/public.pem
+JWT_EXPIRATION_TIME=3600
+        </code></pre>
+    </li>
     <li>Démarrer le serveur Symfony : Ouvrez une nouvelle fenêtre/onglet de terminal et exécutez :
-        <pre><code>symfony serve</code></pre>
+        <pre><code>npm run build
+npm run watch
+symfony serve</code></pre>
     </li>
 </ol>
 
