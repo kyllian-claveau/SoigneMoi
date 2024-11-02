@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const password = document.getElementById('password').value;
     const resultDiv = document.getElementById('result');
 
-    fetch('https://soignemoiproject.online/api/login', {
+    fetch('http://127.0.0.1:8000/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -14,27 +14,26 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erreur lors de la connexion');
+                return response.json().then(errorData => {
+                    throw new Error(errorData.message || 'Erreur lors de la connexion');
+                });
             }
             return response.json();
         })
         .then(data => {
-            const token = data.token; // Supposons que votre API renvoie un objet avec une clé 'token'
+            const token = data.token;
 
-            // Afficher le token dans la page
-            resultDiv.innerHTML = `<p>Authentification réussi !</p>`;
+            if (!token) {
+                throw new Error('Le token est manquant dans la réponse du serveur');
+            }
 
-            // Stocker le token dans un cookie avec une expiration (exemple : 7 jours)
-            const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 jours en milliseconds
-            document.cookie = `authToken=${token}; expires=${expires.toUTCString()}; path=/`;
+            const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+            document.cookie = `authToken=${token}; expires=${expires.toUTCString()}; path=/; Secure`;
 
-            // Optionnel : rediriger après la connexion
-            setTimeout(() => {
-                window.location.href = '/'; // Redirige vers la page d'accueil après 2 secondes
-            }, 2000);
+            window.location.href = '/';
         })
         .catch(error => {
-            resultDiv.textContent = error.message;
+            resultDiv.textContent = `Erreur : ${error.message}`;
             console.error('Erreur lors de la connexion :', error);
         });
 });

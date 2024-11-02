@@ -1,5 +1,6 @@
 {% extends 'layout/unauthenticated/base.html.twig' %}
 {% block title %}SoigneMoi | Connexion{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('scripts/login') }} {% endblock javascripts %}
 {% block content %}
     <div class="pt-24 flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -35,6 +36,18 @@
                             Se connecter
                         </button>
                         <div id="result"></div>
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+
+                        {% for message in app.flashes('error') %}
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+
                     </div>
 
                     <p class="mt-10 text-center text-sm text-gray-500">

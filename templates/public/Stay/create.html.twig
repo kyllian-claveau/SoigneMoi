@@ -1,6 +1,7 @@
 {% extends 'layout/unauthenticated/base.html.twig' %}
 
 {% block title %}SoigneMoi | Nouveau séjour{% endblock %}
+{% block javascripts %}{{ encore_entry_script_tags('scripts/stay') }}{% endblock javascripts %}
 
 {% block content %}
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 pt-24">

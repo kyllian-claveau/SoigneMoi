@@ -7,6 +7,7 @@ use App\Form\LoginType;
 use App\Form\RegisterType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,31 +15,45 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AuthController extends AbstractController
 {
-    private $client;
+    private $jwtManager;
 
-    public function __construct(HttpClientInterface $client)
+    public function __construct(JWTTokenManagerInterface $jwtManager)
     {
-        $this->client = $client;
+        $this->jwtManager = $jwtManager;
     }
+
     #[Route(path: '/api/login', name: 'api_login', methods: ['POST'])]
-    public function apiLogin(): JsonResponse
+    public function apiLogin(Request $request, AuthenticationUtils $authenticationUtils): JsonResponse
     {
         $user = $this->getUser();
 
-        if (!$user) {
-            throw new AccessDeniedException('User not authenticated.');
+        if ($user instanceof UserInterface) {
+            $token = $this->jwtManager->create($user);
+
+            return new JsonResponse([
+                'message' => 'Authentification réussie',
+                'token' => $token,
+            ], JsonResponse::HTTP_OK);
+        }
+
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        if ($error instanceof AuthenticationException) {
+            return new JsonResponse([
+                'message' => 'Identifiants invalides',
+            ], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
         return new JsonResponse([
-            'email' => $user->getUserIdentifier(),
-            'roles' => $user->getRoles(),
-            'id' => $user->getId(),
-        ], JsonResponse::HTTP_OK);
+            'message' => 'Erreur lors de la connexion',
+        ], JsonResponse::HTTP_BAD_REQUEST);
     }
 
 
@@ -46,6 +61,11 @@ class AuthController extends AbstractController
     public function login(Request $request, UserRepository $userRepository, APIController $apiController): Response
     {
         $user = $apiController->getUserFromToken($request, $userRepository);
+
+        if ($user instanceof User && $user->getId()) {
+            return $this->redirectToRoute('app_index');
+        }
+
         return $this->render('public/Auth/login.html.twig', [
             'user' => $user,
         ]);
@@ -62,6 +82,12 @@ class AuthController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserRepository $userRepository, APIController $apiController, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        $user = $apiController->getUserFromToken($request, $userRepository);
+
+        if ($user instanceof User && $user->getId()) {
+            return $this->redirectToRoute('app_index');
+        }
+
         $user = new User();
         $form = $this->createForm(RegisterType::class, $user);
         $form->handleRequest($request);

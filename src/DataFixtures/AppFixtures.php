@@ -94,7 +94,7 @@ class AppFixtures extends Fixture
 
         // Création d'un secrétaire
         $secretary = new User();
-        $secretary->setEmail("doctor@soignemoi.com");
+        $secretary->setEmail("secretary@soignemoi.com");
         $secretary->setFirstname("Jane");
         $secretary->setLastname("Dupont");
         $secretary->setAddress("1 rue de la paix");
