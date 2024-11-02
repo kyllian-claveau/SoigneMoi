@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Doctor;
 use App\Entity\Specialty;
 use App\Entity\Stay;
 use App\Entity\User;

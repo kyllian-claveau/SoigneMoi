@@ -6,7 +6,6 @@ var brandname = document.getElementById("brandname");
 var toToggle = document.querySelectorAll(".toggleColour");
 
 document.addEventListener("scroll", function () {
-    /*Apply classes for slide in bar*/
     scrollpos = window.scrollY;
 
     if (scrollpos > 10 || !navMenuDiv.classList.contains("hidden")) {
@@ -15,7 +14,6 @@ document.addEventListener("scroll", function () {
         navaction.classList.add("gradient");
         navaction.classList.remove("text-black");
         navaction.classList.add("text-black");
-        // Use to switch toggleColour colours
         for (var i = 0; i < toToggle.length; i++) {
             toToggle[i].classList.add("text-black");
             toToggle[i].classList.remove("text-white");
@@ -29,7 +27,6 @@ document.addEventListener("scroll", function () {
         navaction.classList.add("bg-white");
         navaction.classList.remove("text-white");
         navaction.classList.add("text-gray-800");
-        // Use to switch toggleColour colours
         for (var i = 0; i < toToggle.length; i++) {
             toToggle[i].classList.add("text-black");
             toToggle[i].classList.remove("text-gray-800");
@@ -48,14 +45,10 @@ document.onclick = check;
 function check(e) {
     var target = (e && e.target) || (event && event.srcElement);
 
-    // Nav Menu
     if (!checkParent(target, navMenuDiv)) {
-        // Click NOT on the menu
         if (checkParent(target, navMenu)) {
-            // Click on the link
             if (navMenuDiv.classList.contains("hidden")) {
                 navMenuDiv.classList.remove("hidden");
-                // Change text color to black and background to white when menu is open
                 header.classList.add("bg-white");
                 for (var i = 0; i < toToggle.length; i++) {
                     toToggle[i].classList.add("text-black");
@@ -63,7 +56,6 @@ function check(e) {
                 }
             } else {
                 navMenuDiv.classList.add("hidden");
-                // Revert text color and background when menu is closed
                 if (scrollpos < 10) {
                     header.classList.remove("bg-white");
                 }
@@ -73,9 +65,7 @@ function check(e) {
                 }
             }
         } else {
-            // Click both outside link and outside menu, hide menu
             navMenuDiv.classList.add("hidden");
-            // Revert text color and background when menu is closed
             if (scrollpos < 10) {
                 header.classList.remove("bg-white");
             }

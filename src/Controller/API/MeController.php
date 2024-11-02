@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\API;
 
+use App\Controller\APIController;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -27,33 +29,20 @@ class MeController extends AbstractController
     }
 
     #[Route('/api/me', name: 'api_me', methods: ['GET'])]
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request, UserRepository $userRepository, APIController $apiController): JsonResponse
     {
         try {
-            $user = $this->security->getUser();
+            $user = $apiController->getUserFromToken($request, $userRepository);
+
             if (!$user) {
                 throw new AccessDeniedException('User not found.');
             }
 
-            $jwtToken = $request->headers->get('Authorization');
-            if (!$jwtToken) {
-                throw new BadRequestHttpException('Authorization header not found.');
-            }
+            return new JsonResponse([
+                'id' => $user->getId(),
+                'email' => $user->getEmail()
+            ], JsonResponse::HTTP_OK);
 
-            $jwtToken = str_replace('Bearer ', '', $jwtToken);
-            $decodedJwt = $this->jwtEncoder->decode($jwtToken);
-            if (!$decodedJwt) {
-                throw new BadRequestHttpException('Invalid JWT token.');
-            }
-
-            if ($decodedJwt['email'] !== $user->getEmail()) {
-                throw new AccessDeniedException('This user does not have access to this section.');
-            }
-
-            $uuid = $user->getId();
-            $email = $user->getEmail();
-
-            return new JsonResponse(['uuid' => $uuid, 'email' => $email], JsonResponse::HTTP_OK);
         } catch (AccessDeniedException $e) {
             $this->logger->error('Access denied: ' . $e->getMessage());
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_FORBIDDEN);

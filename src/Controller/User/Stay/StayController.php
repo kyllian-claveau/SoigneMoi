@@ -128,13 +128,21 @@ class StayController extends AbstractController
 
 
     #[Route('/doctors/by-specialty/{specialtyId}', name: 'doctors_by_specialty', methods: ['GET'])]
-    public function getDoctorsBySpecialty(Request $request, UserRepository $userRepository, APIController $apiController, $specialtyId, EntityManagerInterface $entityManager): Response
+    public function getDoctorsBySpecialty($specialtyId, EntityManagerInterface $entityManager): Response
     {
-        $user = $apiController->getUserFromToken($request, $userRepository);
-        $doctors = $entityManager->getRepository(User::class)->findBy(['specialty' => $specialtyId]);
-        if (!$user || !in_array('ROLE_USER', $user->getRoles())) {
-            return $this->redirectToRoute('app_login');
-        }
+        // Utilisation d'une requête DQL pour filtrer par spécialité et rôle
+        $query = $entityManager->createQuery(
+            'SELECT u 
+         FROM App\Entity\User u 
+         WHERE u.specialty = :specialtyId 
+         AND u.roles LIKE :role'
+        )
+            ->setParameter('specialtyId', $specialtyId)
+            ->setParameter('role', '%ROLE_DOCTOR%');  // Recherche du rôle docteur
+
+        $doctors = $query->getResult();
+
+        // Préparer les données des docteurs pour l'API
         $doctorData = [];
         foreach ($doctors as $doctor) {
             $doctorData[] = [
@@ -144,6 +152,8 @@ class StayController extends AbstractController
             ];
         }
 
+        // Retourner les docteurs sous forme de JSON
         return $this->json(['doctors' => $doctorData]);
     }
+
 }
