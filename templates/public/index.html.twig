@@ -86,9 +86,27 @@
                 </div>
                 <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
                     <div class="flex items-center justify-start">
+                        {% if 'ROLE_ADMIN' in user.roles %}
+                        <a href="{{ path('app_admin_dashboard') }}" class="mx-auto lg:mx-0 hover:underline bg-secondary text-white font-bold rounded-full my-6 py-3 px-6 md:py-4 md:px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                            Tableau de bord
+                        </a>
+                        {% elseif 'ROLE_USER' in user.roles %}
                         <a href="{{ path('app_user_dashboard') }}" class="mx-auto lg:mx-0 hover:underline bg-secondary text-white font-bold rounded-full my-6 py-3 px-6 md:py-4 md:px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
                             Tableau de bord
                         </a>
+                        {% elseif 'ROLE_DOCTOR' in user.roles %}
+                        <a href="{{ path('app_doctor_dashboard') }}" class="mx-auto lg:mx-0 hover:underline bg-secondary text-white font-bold rounded-full my-6 py-3 px-6 md:py-4 md:px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                            Tableau de bord
+                        </a>
+                        {% elseif 'ROLE_SECRETARY' in user.roles %}
+                        <a href="{{ path('app_secretary_dashboard') }}" class="mx-auto lg:mx-0 hover:underline bg-secondary text-white font-bold rounded-full my-6 py-3 px-6 md:py-4 md:px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                            Tableau de bord
+                        </a>
+                        {% else %}
+                        <a href="{{ path('app_login') }}" class="mx-auto lg:mx-0 hover:underline bg-secondary text-white font-bold rounded-full my-6 py-3 px-6 md:py-4 md:px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                            Se connecter
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
