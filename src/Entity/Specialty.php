@@ -2,10 +2,24 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\SpecialtyRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SpecialtyRepository::class)]
+#[ApiResource(
+    operations: [
+        'get' => new Get(),
+        'post' => new Post(),
+        'delete' => new Delete(),
+        'patch' => new Patch(),
+    ]
+)]
 class Specialty
 {
     #[ORM\Id]
